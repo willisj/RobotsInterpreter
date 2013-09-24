@@ -1,76 +1,52 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+
 
 public class RobotsInterpreterTest {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		String file = "# robots.txt"
-				+ "#"
-				+ "# This file is to prevent the crawling and indexing of certain parts"
-				+ "# of your site by web crawlers and spiders run by sites like Yahoo!"
-				+ "# and Google. By telling these \"robots\" where not to go on your site,"
-				+ "# you save bandwidth and server resources."
-				+ "#"
-				+ "# This file will be ignored unless it is at the root of your host:"
-				+ "# Used:    http://example.com/robots.txt"
-				+ "# Ignored: http://example.com/site/robots.txt"
-				+ "#"
-				+ "# For more information about the robots.txt standard, see:"
-				+ "# http://www.robotstxt.org/wc/robots.html"
-				+ "#"
-				+ "# For syntax checking, see:"
-				+ "# http://www.sxw.org.uk/computing/robots/check.html"
-				+ ""
-				+ "User-agent: *"
-				+ "Crawl-delay: 10"
-				+ "# Directories"
-				+ "Disallow: /includes/"
-				+ "Disallow: /misc/"
-				+ "Disallow: /modules/"
-				+ "Disallow: /profiles/"
-				+ "Disallow: /scripts/"
-				+ "Disallow: /themes/"
-				+ "# Files"
-				+ "Disallow: /CHANGELOG.txt"
-				+ "Disallow: /cron.php"
-				+ "Disallow: /INSTALL.mysql.txt"
-				+ "Disallow: /INSTALL.pgsql.txt"
-				+ "Disallow: /INSTALL.sqlite.txt"
-				+ "Disallow: /install.php"
-				+ "Disallow: /INSTALL.txt"
-				+ "Disallow: /LICENSE.txt"
-				+ "Disallow: /MAINTAINERS.txt"
-				+ "Disallow: /update.php"
-				+ "Disallow: /UPGRADE.txt"
-				+ "Disallow: /xmlrpc.php"
-				+ "# Paths (clean URLs)"
-				+ "Disallow: /admin/"
-				+ "Disallow: /comment/reply/"
-				+ "Disallow: /filter/tips/"
-				+ "Disallow: /node/add/"
-				+ "Disallow: /search/"
-				+ "Disallow: /user/register/"
-				+ "Disallow: /user/password/"
-				+ "Disallow: /user/login/"
-				+ "Disallow: /user/logout/"
-				+ "# Paths (no clean URLs)"
-				+ "Disallow: /?q=admin/"
-				+ "Disallow: /?q=comment/reply/"
-				+ "Disallow: /?q=filter/tips/"
-				+ "Disallow: /?q=node/add/"
-				+ "Disallow: /?q=search/"
-				+ "Disallow: /?q=user/password/"
-				+ "Disallow: /?q=user/register/"
-				+ "Disallow: /?q=user/login/"
-				+ "Disallow: /?q=user/logout/";
+		String file = requestPage("http://www.uwindsor.ca/robots.txt");
 		
 		RobotsInterpreter x = new RobotsInterpreter();
 		x.addFile("uwindsor.ca", file);
+		
+		System.out.println("Setting access time");
 		x.setLastAccessTime("uwindsor.ca");
-		x.checkTimeRemaining("uwindsor.ca");
+		
+		System.out.println("Time remaining: " + x.checkTimeRemaining("uwindsor.ca"));
+		
+		System.out.println("Re-created Robots from parse: \n------------------------------------\n"+x.getParsedFile("uwindsor.ca"));
 		
 	}
 	
+	public static String requestPage(String url) {
+		
+			BufferedReader in;
+			String inputLine;
+			StringBuffer response = new StringBuffer();
 
+			try { // open the stream to the URL
+				in = new BufferedReader(new InputStreamReader(new URL(url).openStream()));
+			} catch (IOException e1) {
+				return "";
+			}
 
+			try { // iterate over input stream until EOF
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine + "\n");
+				}
+				in.close();
+			} catch (IOException e) {
+				return "";
+			}
+
+		return response.toString();
+	}
+
+	
 }

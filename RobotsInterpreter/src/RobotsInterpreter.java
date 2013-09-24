@@ -22,4 +22,8 @@ public class RobotsInterpreter {
 	public void addFile(String domain, String file){
 		domains.put(domain,new Domain(file));
 	}
+	
+	public String getParsedFile(String domain){
+		return domains.get(domain).toString();
+	}
 }
