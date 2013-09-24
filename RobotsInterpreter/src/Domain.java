@@ -48,7 +48,7 @@ public class Domain {
 	}
 
 	public long checkTimeRemaining() {
-		if (crawlDelay > 0)
+		if (crawlDelay == 0)
 			return 0;
 		return crawlDelay - ((date.getTime() - lastAccess) / 1000);
 	}
