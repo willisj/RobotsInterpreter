@@ -72,7 +72,7 @@ public class RobotWebpagePermissions {
 			field = lineMatcher.group(1);
 			value = lineMatcher.group(2);
 
-			if (m.matches()) {
+			if (lineMatcher.matches()) {
 				if (currentUserAgent.equals("*")
 						|| currentUserAgent.equals(this.getName())) {
 					if (field.equalsIgnoreCase("disallow")) {
