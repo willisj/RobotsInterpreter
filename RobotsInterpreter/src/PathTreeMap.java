@@ -1,12 +1,20 @@
-class PathTreeMapNode<KeyType extends Comparable<KeyType>, ValueType>
+/* PathTreeMap
+Creator: Joshua Chittle
+Contributors: 
+
+Description: Represents a sub-tree of a heirarchy mapping to various values.
+Values which decend from this node but are not explicitly given a value inherit this nodes value.
+*/
+
+class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
 {
 	private ValueType _value;
-	private List<KeyValuePair<KeyType, PathTreeMapNode<KeyType, ValueType> > _keyToNextNode;
+	private List<KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType> > _keyToNextNode;
 	
 	public PathTreeMapNode(ValueType value)
 	{
 		this._value = value;
-		this._keyToNextNode = new LinkedList<KeyValuePair<KeyType, PathTreeMapNode<KeyType, ValueType> >();
+		this._keyToNextNode = new LinkedList<KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType> >();
 	}
 	
 	public ValueType get()
@@ -32,8 +40,8 @@ class PathTreeMapNode<KeyType extends Comparable<KeyType>, ValueType>
 		}
 		else if(!this.containsKey(keys[0])
 		{
-			KeyValuePair<KeyType, PathTreeMapNode<KeyType, ValueType> element =
-				new KeyValuePair<KeyType, PathTreeMapNode<KeyType, ValueType>(
+			KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType> element =
+				new KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType>(
 					keys[0], new PathTreeMapNode(this.get()));
 			this._keyToNextNode.add(element);
 		}
@@ -54,7 +62,7 @@ class PathTreeMapNode<KeyType extends Comparable<KeyType>, ValueType>
 		return null;
 	}
 	
-	public bool containsKey(KeyType key)
+	private bool containsKey(KeyType key)
 	{
 		return this.getNextNode(key) != null;
 	}
