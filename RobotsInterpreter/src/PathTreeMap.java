@@ -62,7 +62,7 @@ class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
 		return null;
 	}
 	
-	private bool containsKey(KeyType key)
+	public bool containsKey(KeyType key)
 	{
 		return this.getNextNode(key) != null;
 	}
