@@ -6,8 +6,8 @@ import java.util.List;
 Creator: Joshua Chittle
 Contributors: Jordan Willis, code debugging
 
-Description: Represents a sub-tree of a heirarchy mapping to various values.
-Values which decend from this node but are not explicitly given a value inherit this nodes value.
+Description: Represents a sub-tree of a hierarchy mapping to various values.
+Values which descend from this node but are not explicitly given a value inherit this nodes value.
 */
 
 class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
@@ -67,7 +67,7 @@ class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
 		return null;
 	}
 	
-	private boolean containsKey(KeyType key)
+	boolean containsKey(KeyType key) 
 	{
 		return this.getNextNode(key) != null;
 	}
