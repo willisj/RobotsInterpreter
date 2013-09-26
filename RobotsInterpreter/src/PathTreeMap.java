@@ -13,13 +13,13 @@ Values which descend from this node but are not explicitly given a value inherit
 class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
 {
 	private ValueType _value;
-	private List<KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType> >> _keyToNextNode;
+	private List< KeyValuePair< KeyType, PathTreeMap<KeyType, ValueType> > > _keyToSubTree;
 	private KeyType currentKey; 
 	
 	public PathTreeMap(ValueType value)
 	{
 		this._value = value;
-		this._keyToNextNode = new LinkedList< KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType>>>();
+		this._keyToSubTree = new LinkedList< KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType>>>();
 	}
 	
 	public ValueType get()
@@ -34,7 +34,7 @@ class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
 			return this.get();
 		}
 		
-		return ((PathTreeMap<KeyType, ValueType>) this.getNextNode(keys[0])).get(Arrays.copyOfRange(keys, 1, keys.length));
+		return this.getSubTree(keys[0])).get(Arrays.copyOfRange(keys, 1, keys.length));
 	}
 	
 	public void put(KeyType[] keys, ValueType value)
@@ -48,19 +48,24 @@ class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
 			KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType>> element =
 				new KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType>>(
 					keys[0], new PathTreeMap<KeyType, ValueType>(this.get()));
-			this._keyToNextNode.add(element);
+			this._keyToSubTree.add(element);
 		}
 		
-		((PathTreeMap<KeyType, ValueType>) this.getNextNode(keys[0])).put(Arrays.copyOfRange(keys, 1, keys.length), value);
+		this.getSubTree(keys[0])).put(Arrays.copyOfRange(keys, 1, keys.length), value);
 	}
 	
-	private ValueType getNextNode(KeyType key)
+	/* getSubTree(..)
+	Input:	Key (outgoing edge of this node).
+	Output:	Root node of a Sub-Tree of this Node determined by following the given key.
+		Null if this node does not contain the given key.
+	*/
+	private PathTreeMap<KeyType, ValueType> getSubTree(KeyType key)
 	{
-		for(KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType>> pair : _keyToNextNode)
+		for(KeyValuePair<KeyType, PathTreeMap<KeyType, ValueType>> pair : _keyToSubTree)
 		{
-			if(pair.getKey().equals(currentKey))
+			if(pair.getKey().equals(key))
 			{
-				return	pair.getValue().get(remainingKeys); 
+				return	pair.getValue(); 
 			}
 		}
 		
@@ -69,6 +74,6 @@ class PathTreeMap<KeyType extends Comparable<KeyType>, ValueType>
 	
 	boolean containsKey(KeyType key) 
 	{
-		return this.getNextNode(key) != null;
+		return this.getSubTree(key) != null;
 	}
 }
